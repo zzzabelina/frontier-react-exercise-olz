@@ -1,0 +1,63 @@
+html * {
+  font-size: 0.98em;
+  font-family: Arial;
+}
+
+.wrapper {
+  list-style-type: none;
+  padding: 0;
+  width: 40%;
+}
+
+.formSection {
+  border: 1px solid rgb(207, 135, 0);
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.formSectionTitle {
+  font-size: 1.2em;
+}
+
+.form-row {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5em;
+}
+.form-row > label {
+  padding: 0.5em 1em 0.5em 0;
+  flex: 2;
+}
+.form-row > input,
+.form-row > textarea,
+.form-row > select {
+  flex: 1;
+}
+.form-row > input,
+.form-row > textarea,
+.form-row > select,
+.form-row > button {
+  padding: 0.5em;
+}
+.form-row > button {
+  border: 1;
+  cursor: pointer;
+}
+
+.form-row > button:enabled {
+  background-color: white;
+  border-color: black;
+}
+
+.form-row > button:disabled {
+  background-color: rgb(207, 135, 0);
+}
+
+.submit-button {
+  background: rgb(207, 135, 0);
+  color: white;
+  border: 0;
+  padding: 1em;
+  border-radius: 10px;
+}
