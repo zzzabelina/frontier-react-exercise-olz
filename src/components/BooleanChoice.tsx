@@ -1,9 +1,9 @@
-import React from 'react';
+import React from "react";
 
-interface BoolChoiceProps extends IHasNameLabelValueOnChange {}
+interface BoolChoiceProps extends IHasNameLabelValueRequiredOnChange {}
 
-export function BooleanChoice({value, name, label, onChange}: BoolChoiceProps) {
-  const boolValue = value === 'true';
+export function BooleanChoice({ value, name, label, onChange }: BoolChoiceProps) {
+  const boolValue = value === "true";
 
   const toggleChoice = () => {
     onChange(name, (!boolValue).toString());

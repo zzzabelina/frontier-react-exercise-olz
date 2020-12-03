@@ -23,7 +23,8 @@ it("textInput renders input with correct value", () => {
     label: "Test label",
     value: "1",
     onChange: (name: string, value: string) => {},
-    type: "text",
+    format: "number",
+    required: true,
   };
   if (!container) return;
 

@@ -1,11 +1,23 @@
 import React, { ChangeEvent } from "react";
 
-export interface TextInputProps extends IHasNameLabelValueOnChange {
+export interface TextInputProps extends IHasNameLabelValueRequiredOnChange {
   placeholder?: string;
-  type: string;
+  format?: "text" | "email" | "number";
+  step?: number;
+  pattern?: string;
 }
 
-export function TextInput({ value, name, label, placeholder, type, onChange }: TextInputProps) {
+export function TextInput({
+  value,
+  name,
+  label,
+  placeholder,
+  format,
+  step,
+  required,
+  pattern,
+  onChange,
+}: TextInputProps) {
   const inputOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.name, e.target.value);
   };
@@ -16,11 +28,14 @@ export function TextInput({ value, name, label, placeholder, type, onChange }: T
       {label && <label htmlFor={name}>{label}</label>}
 
       <input
-        type={type || "text"}
+        type={format || "text"}
         name={name}
         placeholder={placeholder}
         value={value}
         min={0}
+        step={step}
+        required={required}
+        pattern={pattern}
         onChange={inputOnChange}
       />
     </>

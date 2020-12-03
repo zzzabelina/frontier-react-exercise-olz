@@ -1,25 +1,26 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 
-import {BooleanChoice} from './BooleanChoice';
-import Select, {SelectInputProps} from './Select';
-import TextArea, {TextAreaProps} from './TextArea';
-import TextInput, {TextInputProps} from './TextInput';
+import { BooleanChoice } from "./BooleanChoice";
+import Select, { SelectInputProps } from "./Select";
+import TextArea, { TextAreaProps } from "./TextArea";
+import TextInput, { TextInputProps } from "./TextInput";
 
-import {Content, FormInstructions, Section} from '../types/FormInstructions';
+import { Frontier } from "../types/FormInstructions";
 
-import '../styles/App.css';
+import "../styles/App.css";
 
-import formInstructions from '../data/form_instructions.json';
+import formInstructions from "../data/form_instructions.json";
+import { FormEvent } from "react";
 
 function App() {
   const [formData, setFormData] = useState<Dictionary<any>>({});
 
   useEffect(() => {
-    const formSections: Section[] = (formInstructions as FormInstructions).sections;
-    const formData: Dictionary<any> = {};
+    const formSections: Frontier.Section[] = (formInstructions as Frontier.Job).sections;
+    const formData: Dictionary<string | boolean | string[] | undefined> = {};
 
-    formSections.forEach(section => {
-      section.content.forEach(item => {
+    formSections.forEach((section) => {
+      section.content.forEach((item) => {
         formData[item.id] = undefined;
       });
     });
@@ -27,51 +28,58 @@ function App() {
     setFormData(formData);
   }, []);
 
-  function handleTextFieldChange(name: string, value: any) {
-    setFormData(prev => ({...prev, [name]: value}));
+  function handleFieldChange(name: string, value: any) {
+    setFormData((prev) => ({ ...prev, [name]: value }));
   }
 
-  const getFormElement = (item: Content) => {
-    const props: IHasNameLabelValueOnChange = {
+  const getFormElement = (item: Frontier.Element) => {
+    const props: IHasNameLabelValueRequiredOnChange = {
       name: item.id,
       label: item.question_text,
       value: formData[item.id],
-      onChange: handleTextFieldChange,
+      required: item.metadata.required,
+
+      onChange: handleFieldChange,
     };
 
     switch (item.type) {
-      case 'textarea':
-        const textAreaProps: TextAreaProps = {type: item.type, ...props};
+      case "textarea":
+        const textAreaProps: TextAreaProps = { ...props };
         return <TextArea {...textAreaProps} />;
 
-      case 'boolean':
+      case "boolean":
         return <BooleanChoice {...props} />;
 
-      case 'monochoice':
-      case 'multichoice':
+      case "multichoice":
         const selectInputProps: SelectInputProps = {
           options: item.metadata.options,
-          type: item.type,
           ...props,
         };
         return <Select {...selectInputProps} />;
 
       default:
-        const textIpputProps: TextInputProps = {
-          type: item.type,
+        const textInputProps: TextInputProps = {
+          format: item.metadata.format,
           placeholder: item.metadata.placeholder,
+          step: item.metadata.step,
+          pattern: item.metadata.pattern,
           ...props,
         };
-        return <TextInput {...textIpputProps} />;
+        return <TextInput {...textInputProps} />;
     }
   };
 
+  const printFormData = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(formData);
+  };
+
   return (
-    <div className="wrapper">
-      {(formInstructions as FormInstructions).sections.map(formSection => (
+    <form className="wrapper" onSubmit={printFormData}>
+      {(formInstructions as Frontier.Job).sections.map((formSection) => (
         <div key={formSection.id} className="formSection">
           <div className="formSectionTitle">{formSection.title}</div>
-          {formSection.content.map(item => (
+          {formSection.content.map((item) => (
             <div key={item.id} className="form-row">
               {getFormElement(item)}
             </div>
@@ -80,11 +88,11 @@ function App() {
       ))}
 
       <p>
-        <button className="submit-button" type="button" onClick={() => console.log(formData)}>
+        <button className="submit-button" type="submit">
           Next
         </button>
       </p>
-    </div>
+    </form>
   );
 }
 

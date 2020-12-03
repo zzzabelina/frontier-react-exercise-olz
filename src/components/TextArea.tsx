@@ -1,11 +1,10 @@
 import React from "react";
 
-export interface TextAreaProps extends IHasNameLabelValueOnChange {
+export interface TextAreaProps extends IHasNameLabelValueRequiredOnChange {
   placeholder?: string;
-  type: string;
 }
 
-export function TextArea({ value, name, label, placeholder, onChange }: TextAreaProps) {
+export function TextArea({ value, name, label, placeholder, required, onChange }: TextAreaProps) {
   const inputOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     onChange(e.target.name, e.target.value);
   };
@@ -13,7 +12,7 @@ export function TextArea({ value, name, label, placeholder, onChange }: TextArea
   return (
     <>
       {label && <label htmlFor={name}>{label}</label>}
-      <textarea name={name} placeholder={placeholder} value={value} onChange={inputOnChange} />
+      <textarea name={name} placeholder={placeholder} value={value} onChange={inputOnChange} required={required} />
     </>
   );
 }
